@@ -3,6 +3,8 @@ package solution;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static java.lang.System.*;
+
 // https://www.hackerrank.com/challenges/matching-specific-string/problem
 public class Solution {
 
@@ -17,12 +19,15 @@ public class Solution {
         Pattern pattern = Pattern.compile(stringPattern);
         Matcher matcher = pattern.matcher(SAMPLE_TEXT_1);
         int counting = 0;
-        while (matcher.find())
+        while (matcher.find()) {
             counting++;
-        System.out.println(counting);
+        }
+        out.println(counting);
     }
 
     public static void main(String[] args) {
         countPatternFinded("hackerrank");
+        countPatternFinded("t\\w+p");
+        countPatternFinded("r\\w+g");
     }
 }
