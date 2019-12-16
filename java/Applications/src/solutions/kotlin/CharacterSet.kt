@@ -62,14 +62,11 @@ fun testNegateCharClass() {
      * nao seja o do conjunto
      *
      * Por exemplo
-     * regex: q[^u] = corresponde a uma string que comece com caracter "q" a a seguinte
+     * regex: q[^u] = corresponde a uma string que comece com caracter "q" a seguir
      * seja qualquer caracter diferente de "u", nao podemos interpretar como se com essa regex
-     * quisemos corresponder com uma string q comece com "q" nao seguido de "u", pq o q poderia
+     * quisemos corresponder com uma string q comece com "q" nao seguido de "u", pq o 'q' poderia
      * ser o ultimo (e unico) caracter e a regex nao corresponderia com a string, em nenhum ponto
      * */
-
-
-
     "q".testMatchRegex("q[^u]".toRegex())
     "q".testMatchRegex("q(?!u)".toRegex())
     "q_".testMatchRegex("q(?!u)_".toRegex())         // negative lookahead -> "q" nao seguido por "u" seguido por _
@@ -90,8 +87,14 @@ fun testNegateCharClass() {
 }
 
 // https://www.regular-expressions.info/characters.html#special
-fun testSpecialChar() {}
+//fun testSpecialChar() {}
+
+fun testBackReference() {
+    "333".testMatchRegex(Regex("([0-9])\\1+"))
+    "333".testMatchRegex(Regex("([0-9])\\1{3}"))
+    "123".testMatchRegex(Regex("([0-9])\\1{3}"))
+}
 
 fun main() {
-    testNegateCharClass()
+    testBackReference()
 }
