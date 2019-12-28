@@ -5,9 +5,11 @@ fun String.logMatchRegex(regex: Regex) {
         , this, if (this.matches(regex)) "match" else "no match", regex))
 }
 
-internal val startOrEndWithWhiteSpaces = Regex("(^\\s+.*)|(.*\\s$+)")
+internal val startOrEndWithWhiteSpaces = Regex("(^\\s+.*)|(.*\\s+$)", RegexOption.MULTILINE)
 
-internal val startingOrEndingWithWhiteSpace= "^\\s+|\\s+$".toRegex()
+internal val startOrEndWithWhiteSpacesAndHasSomeChars = Regex("(^\\s+\\w+)|(\\w+\\s+$)", RegexOption.MULTILINE)
+
+internal val startingOrEndingWithWhiteSpace= "^\\s+|\\s+$".toRegex(RegexOption.MULTILINE)
 
 fun String.testIfStringStartsOrEndsWithWhiteSpace() = this.matches(startOrEndWithWhiteSpaces)
 

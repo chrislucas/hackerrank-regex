@@ -1,9 +1,7 @@
 package solutions.kotlin.samples
 
-import solutions.kotlin.utils.lineSeparation
-import solutions.kotlin.utils.logIfStringStartsOrEndsWithWhiteSpace
-import solutions.kotlin.utils.logMatchRegex
-import solutions.kotlin.utils.replaceWhiteSpacesInStartOrEnd
+import solutions.kotlin.utils.*
+import solutions.kotlin.utils.startOrEndWithWhiteSpaces
 
 /**
  * Fonte: https://www.regular-expressions.info/anchors.html
@@ -68,7 +66,11 @@ fun testStringStartOrAndWithWhitespaces() {
     val list =    listOf(
         " a"
         , " a "
+        , " "
         , "                  a              "
+        , "                  a parada              "
+        , "  *                a teste              \n a * "
+        , "  *                a teste              \n parada * "
     )
     list.forEach {
         it.logIfStringStartsOrEndsWithWhiteSpace()
@@ -101,15 +103,46 @@ fun testStringStartOrAndWithWhitespaces() {
 }
 
 /**
- * \\A
+ * \\A corresponde somente com o inicio da String
  *
- * \\Z
- *
+ * \\Z corresponde somente com o fim da string
+ * O interessante desse exemplo eh que \\A e \\Z funciona para uma string com multiplas
+ * linhas sem a necessidade de usar options MULTILINE
  * */
-fun testPermanentStartAndEndOfString() {
-    val startAndEndsOnlyNumbers = Regex("\\A\\d+\\Z")
-    "123123123123123".logMatchRegex(startAndEndsOnlyNumbers)
-    "1231231\n23123123".logMatchRegex(startAndEndsOnlyNumbers)
+fun testStartAndEndOfString() {
+    // inicia e termina com um ou mais numeros
+    val startAndEndsOnlyNumbers = Regex("\\A\\d+.*\\d+\\Z", RegexOption.MULTILINE)
+    var list = listOf(
+        "123123123123123"
+        ,"1a3"
+        ,"1aaaaaaaaaaaaa3"
+        ,"1aaaaaaaaaaaaa"
+        ,"aaaaaaaaaaaaa3"
+        ,"0aaaaaaaaaaaaa3"
+        ,  "1231231\n23123123"
+    )
+    list.forEach {
+        it.logMatchRegex(startAndEndsOnlyNumbers)
+    }
+    lineSeparation()
+    // inicia com qualquer caracter (incluindo \r ou \n) e termina com N espacos em branco
+    val endingWithNWhiteSpaces = Regex("[\\w-*\\s]*\\s+\\Z")
+    list = listOf("a  "
+        , "a\n        "
+        , "a -\n        "
+        , "a -\n\n\n\n\n\n\n\n        "
+        , "a\n        *"
+        , "a\n\n\n\n\n\n atestado LF        * "
+        , "a\r\r\r\r\r\r atestado CR       * "
+        , "a\n\r\n\r\n\r\n\r\n\r\n\r atestado CRLF       * "
+        , "a\n        * "
+        , "a \n        * "
+        , " \n         "
+    )
+    list.forEach {
+        it.logMatchRegex(endingWithNWhiteSpaces)
+    }
+
 }
 
 fun testMultiline() {
@@ -132,5 +165,5 @@ fun testMultiline() {
 }
 
 fun main() {
-    testPermanentStartAndEndOfString()
+    testStartAndEndOfString()
 }
