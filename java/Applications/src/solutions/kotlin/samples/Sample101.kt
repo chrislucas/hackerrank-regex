@@ -1,4 +1,4 @@
-package solutions.kotlin
+package solutions.kotlin.samples
 
 /**
  * https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.text/-regex/index.html

@@ -1,0 +1,21 @@
+anchors
+https://howtodoinjava.com/regex/start-end-of-string/
+https://www.regular-expressions.info/anchors.html
+
+
+Grouping and char class ( (), [])
+https://stackoverflow.com/questions/3789417/whats-the-difference-between-and-in-regular-expression-patterns
+
+Problem
+https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/regular-expressions/remove-whitespace-from-start-and-end
+Solution
+Regex: /^\s+|\s+$/g
+
+CR = Carriage Return - 0x0D \r
+LF = Line Feed - 0x0A \n
+windows \r\n
+linux \n
+old mac \r
+
+
+https://stackoverflow.com/questions/1552749/difference-between-cr-lf-lf-and-cr-line-break-types

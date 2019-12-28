@@ -1,4 +1,4 @@
-package solutions.kotlin
+package solutions.kotlin.samples
 
 /**
  * https://www.regular-expressions.info/lookaround.html
@@ -19,8 +19,8 @@ package solutions.kotlin
  * */
 
 fun testLookAHeadAssertions() {
-    val lka = "(?=<\\w>)\\w+</\\w>".toRegex()
-    println("<a>teste</a>".matches(lka))
+    val regex = "(?=<\\w>)\\w+</\\w>".toRegex()
+    println("<a>teste</a>".matches(regex))
 
 
 }

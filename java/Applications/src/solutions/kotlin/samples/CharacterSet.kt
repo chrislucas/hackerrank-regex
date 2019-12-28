@@ -1,4 +1,6 @@
-package solutions.kotlin
+package solutions.kotlin.samples
+
+import solutions.kotlin.utils.logMatchRegex
 
 /**
  * https://www.regular-expressions.info/charclass.html
@@ -24,7 +26,7 @@ fun testCharSetWithQuantifierOp() {
     val regex1 = "p[aã][io]+".toRegex()
     // uma lista com string que correspondem a regex acima
     listOf("paioioioioio", "paoooooooooo", "pãoooooooooooo", "paioioioio", "pao", "pai")
-        .forEach { println(it.testMatchRegex(regex1)) }
+        .forEach { println(it.logMatchRegex(regex1)) }
 }
 
 fun testCharSetWithQuantifierOpCorrectRepeat() {
@@ -38,21 +40,21 @@ fun testCharSetWithQuantifierOpCorrectRepeat() {
      *
      * */
     val regex2 = "pa([io])\\1+".toRegex()
-    println("paiiiii".testMatchRegex(regex2))
-    println("paiiiii".testMatchRegex(regex2))
-    println("paiioo".testMatchRegex(regex2))
-    println("paio".testMatchRegex(regex2))
+    println("paiiiii".logMatchRegex(regex2))
+    println("paiiiii".logMatchRegex(regex2))
+    println("paiioo".logMatchRegex(regex2))
+    println("paio".logMatchRegex(regex2))
 }
 
 fun testCharClass101() {
-    println("this".testMatchRegex("th[iu]s".toRegex())) // corresponde com this ou thus
-    println("thus".testMatchRegex("th[iu]s".toRegex())) // corresponde com this ou thus
-    println("gray".testMatchRegex("gr[ae]y".toRegex()))
+    println("this".logMatchRegex("th[iu]s".toRegex())) // corresponde com this ou thus
+    println("thus".logMatchRegex("th[iu]s".toRegex())) // corresponde com this ou thus
+    println("gray".logMatchRegex("gr[ae]y".toRegex()))
 
     val regexpNumberFormatHex = Regex("0[xX][a-fA-F0-9]+")
-    println("0xff".testMatchRegex(regexpNumberFormatHex))
-    println("0xf0".testMatchRegex(regexpNumberFormatHex))
-    println("0Xf0".testMatchRegex(regexpNumberFormatHex))
+    println("0xff".logMatchRegex(regexpNumberFormatHex))
+    println("0xf0".logMatchRegex(regexpNumberFormatHex))
+    println("0Xf0".logMatchRegex(regexpNumberFormatHex))
 }
 
 fun testNegateCharClass() {
@@ -67,32 +69,32 @@ fun testNegateCharClass() {
      * quisemos corresponder com uma string q comece com "q" nao seguido de "u", pq o 'q' poderia
      * ser o ultimo (e unico) caracter e a regex nao corresponderia com a string, em nenhum ponto
      * */
-    "q".testMatchRegex("q[^u]".toRegex())
-    "q".testMatchRegex("q(?!u)".toRegex())
-    "q_".testMatchRegex("q(?!u)_".toRegex())         // negative lookahead -> "q" nao seguido por "u" seguido por _
-    "qa_".testMatchRegex("q(?!u)_".toRegex())
-    "q ".testMatchRegex("q[^u]".toRegex())
-    "qa_".testMatchRegex("q[^u]_".toRegex())
-    "Prozac".testMatchRegex("\\w+c[^u]".toRegex())
-    "Prozac ".testMatchRegex("\\w+c[^u]".toRegex())
-    "t3st".testMatchRegex("t[^aeiou]st".toRegex())
-    "tast".testMatchRegex("t[aeiou]st".toRegex())
+    "q".logMatchRegex("q[^u]".toRegex())
+    "q".logMatchRegex("q(?!u)".toRegex())
+    "q_".logMatchRegex("q(?!u)_".toRegex())         // negative lookahead -> "q" nao seguido por "u" seguido por _
+    "qa_".logMatchRegex("q(?!u)_".toRegex())
+    "q ".logMatchRegex("q[^u]".toRegex())
+    "qa_".logMatchRegex("q[^u]_".toRegex())
+    "Prozac".logMatchRegex("\\w+c[^u]".toRegex())
+    "Prozac ".logMatchRegex("\\w+c[^u]".toRegex())
+    "t3st".logMatchRegex("t[^aeiou]st".toRegex())
+    "tast".logMatchRegex("t[aeiou]st".toRegex())
 
     /**
      * Se quisermos uma regex que corresponda com "A" nao seguido de "B
      * usamos o negative lookahead(?!)
      * */
-    "http".testMatchRegex("http(?!s)".toRegex())
-    "https".testMatchRegex("http(?!s)".toRegex())
+    "http".logMatchRegex("http(?!s)".toRegex())
+    "https".logMatchRegex("http(?!s)".toRegex())
 }
 
 // https://www.regular-expressions.info/characters.html#special
 //fun testSpecialChar() {}
 
 fun testBackReference() {
-    "333".testMatchRegex(Regex("([0-9])\\1+"))
-    "333".testMatchRegex(Regex("([0-9])\\1{3}"))
-    "123".testMatchRegex(Regex("([0-9])\\1{3}"))
+    "333".logMatchRegex(Regex("([0-9])\\1+"))
+    "333".logMatchRegex(Regex("([0-9])\\1{3}"))
+    "123".logMatchRegex(Regex("([0-9])\\1{3}"))
 }
 
 fun main() {

@@ -1,4 +1,4 @@
-package solutions.kotlin
+package solutions.kotlin.problems
 
 // https://www.hackerrank.com/challenges/detect-html-links/problem
 
