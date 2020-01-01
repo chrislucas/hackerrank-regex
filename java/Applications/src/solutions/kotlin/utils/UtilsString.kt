@@ -5,6 +5,14 @@ fun String.logMatchRegex(regex: Regex) {
         , this, if (this.matches(regex)) "match" else "no match", regex))
 }
 
+fun String.logMatchesRegex(vararg listRegex: Regex, after: () -> Unit, assertion: Boolean = false) {
+    listRegex.forEach {
+        this.logMatchRegex(it)
+    }
+    if (assertion)
+        after()
+}
+
 internal val startOrEndWithWhiteSpaces = Regex("(^\\s+.*)|(.*\\s+$)", RegexOption.MULTILINE)
 
 internal val startOrEndWithWhiteSpacesAndHasSomeChars = Regex("(^\\s+\\w+)|(\\w+\\s+$)", RegexOption.MULTILINE)

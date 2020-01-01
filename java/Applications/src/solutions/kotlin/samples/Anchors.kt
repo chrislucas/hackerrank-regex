@@ -1,7 +1,6 @@
 package solutions.kotlin.samples
 
 import solutions.kotlin.utils.*
-import solutions.kotlin.utils.startOrEndWithWhiteSpaces
 
 /**
  * Fonte: https://www.regular-expressions.info/anchors.html
@@ -108,6 +107,8 @@ fun testStringStartOrAndWithWhitespaces() {
  * \\Z corresponde somente com o fim da string
  * O interessante desse exemplo eh que \\A e \\Z funciona para uma string com multiplas
  * linhas sem a necessidade de usar options MULTILINE
+ *
+ * Esses 2 metachars nao correspondem a quebra de linha \n
  * */
 fun testStartAndEndOfString() {
     // inicia e termina com um ou mais numeros
@@ -145,11 +146,13 @@ fun testStartAndEndOfString() {
 
 }
 
-fun testMultiline() {
+fun testFlagMultiline() {
     // inicia com 1 ou mais numeros e termiina com numero
     // (?m) eh uma flag para que a regex atenda a multiplas linhas
-    val matchOnlyStringOfNumbers = "^\\d+$(?m)".toRegex()
-    listOf( "123123123123123"
+    val matchWithStartAndEndWithDigitsMultiline = "^\\d+[\\w\\s]\\d+(?m)$".toRegex()
+    val matchWithStartAndEndWithDigits = "^\\d+[\\w\\s]\\d+$".toRegex()
+    val matchWithStartAndEndWithDigitsAndMoreCharBetween = "^\\d+[\\w\\s]+\\d+$".toRegex()
+    val list = listOf( "123123123123123"
         // String de numeros com um unico espaco
         , "123123 123123123"
         // Testando a regex para verificar uma String comeca e termina com numeros, mas
@@ -158,12 +161,67 @@ fun testMultiline() {
         , "0xf0"
         , "0xff"
         , "1231231\n23123123"
-    ).forEach {
-        it.logMatchRegex(matchOnlyStringOfNumbers)
-        it.logMatchRegex(Regex("^\\d+\$", RegexOption.MULTILINE))
+        , "1231231\n\n23123123"
+        , "123\n3\n"
+        , "123\n3\n0"
+    )
+
+    list.forEachIndexed {
+        index, it ->
+        it.logMatchesRegex(
+           listRegex = *arrayOf( matchWithStartAndEndWithDigitsMultiline, matchWithStartAndEndWithDigits,
+               matchWithStartAndEndWithDigitsAndMoreCharBetween)
+            , after = { println("*****************************************************************") }
+            , assertion = index < list.size - 1
+        )
+    }
+
+    println("\n****************** Outro teste ***************************\n")
+
+    // inicia com 1 digito seguido de varios caracteres quaisquer inclusive espaco
+    // termina com 1 digito
+    val regex = Regex("\\A\\d[\\w\\s]+\\d\\Z")
+    list.forEach {
+        it.logMatchRegex(regex)
     }
 }
 
+fun testOnlyDigits() {
+    val list = listOf(
+        "123"
+        , "123\n"
+        , "123\n\n\n\n123"
+        , "123\n\n\n\n"
+        , "123a3"
+        , "0x0f"
+        , "0\n0"
+        , "00\n0"
+        , "12345654654654654654646546546546546546546541321313131313213213131"
+        , "1234565465465465465464654654654654654654654132131313131321321313a"
+    )
+
+    list.forEachIndexed {
+        i, s ->
+        s.logMatchesRegex(
+            listRegex = *arrayOf(
+                Regex("^\\d+$")
+                , Regex("^\\d+(m?)$")
+                , Regex("\\A\\d+\\Z")
+                , Regex("\\A\\d+(m?)\\Z")
+                , Regex("\\A\\d+\\z")       // \\z matches
+            )
+            , after = { println("******************************************************") }
+            , assertion = i < list.size - 1
+        )
+    }
+}
+
+fun testEndOfString() {
+    // 1 caracter
+    val manyLineBreaksAndMultiLineModeOff = "[a-zA-Z]\\n+$".toRegex(RegexOption.MULTILINE)
+    "a\n\n\n\n".logMatchRegex(manyLineBreaksAndMultiLineModeOff)
+}
+
 fun main() {
-    testStartAndEndOfString()
+    testEndOfString()
 }
