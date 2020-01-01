@@ -5,6 +5,52 @@ anchors
 https://howtodoinjava.com/regex/start-end-of-string/
 https://www.regular-expressions.info/anchors.html
 
+Exemplo de funcionamento dos tokens ^ e $ com a string "749\n486\n4"
+fonte: https://www.regular-expressions.info/anchors.html (Looking Inside The Regex Engine)
+String = "749\n486\n4" regex ^4$
+1) a engine regex (eng_reg) olha para o primeiro token da regex ^, verifica se o primeiro caracter da string
+corresponde ao primeiro token. Como ele eh um token de zero-length ou seja corresponde a uma posicao nao a um caracter
+na string, e esse token corresponde a primeira posicao antes do primeiro caracter da String (7), entao ha correspondecia
+e a eng_reg passa para o proximo token (4) mas se mantem olhando para o caracter "7" pois o token anterior eh um zero-length
+
+2) a eng_reg agora tenta corresponder o segundo token "4" com o caracter "7", como nao a correspondencia
+a eng_reg volta para o primeiro token (^) e tenta achar uma correspondencia, ainda olhando para o caracter "7", e nao
+encontra correspondencia tbm, pois como dito ^ nao corresponde com caracter mas com uma posicao na string.
+
+3) a eng_reg passa para o proximo caracter na String e se mantem no primeiro token. Procura correspondencia entre  "^"
+   e "4" e nao encontra, pois "4" e precedido por "7"
+
+4) a eng_reg passa para o proximo caracter na String e se mantem no primeiro token. Procura correspondencia entre  "^"
+e "9" e nao encontra
+
+5) a eng_reg passa para \n, e ainda busca correspondencia com "^". Não encontra correspondencia, e assim passa para o
+proximo caracter
+
+6) a eng_reg chega ao segundo "4", e usando o token "^" encontra correspondencia pois o 4 e precedido por um \n.
+assim ela passa para o proximo token "4" e encontra corresponencia tambem, passando para o proximo token ($) e o proximo
+caracter (8,a eng_reg avanca para o proximo caracter quando encontra correspondencia entre o token que procura um caracter e
+o caracter existente na string onde ocorre a busca). Nao a correpondencia pois a string possui caracteres apos o "8" e $
+corresponde ao final da string
+
+7) a eng_reg volta para o token "^" e procura correspondencia no caracter 8. Como ele precede um outro caracter nao ha correspondencia
+e a eng_reg nao avanca o token
+
+8) a eng_reg procura correspondencia entre "^" e o caracter "6", mas nao ocorre.
+
+9) a eng_reg procura correspondencia entre "^" e o caracter "\n", mas nao ocorre.
+
+10) a eng_reg procura correspondencia entre "^" e o caracter "4". Como o \n  antecede "4", ocorre a correspondencia
+assim a eng_reg prossegue para o proximo token "4", e como o token anterior era zero-length ela ainda esta olhando
+para o caracter "4" e encontra correspondencia, por fim ela segue para o proximo token. Como houve correspondencia
+anteriormente a eng_reg passa a olha o proximo caracter da string, que eh o vazio e compara o o token $ e como estamos
+no final da string ocorre uma correspondencia
+
+Ponto importante, nenhum token que corresponde a um caracter em expressoes regulares correspondem com final de string
+ou string vazia, nem mesmo a negacao de classes de caracteres ([^\\w])
+
+$ eh um zero-legth match, e vai fazer com que eng_reg tente corresponde com a posicao antes do caracter que a eng_reg
+esta analizando. Para achar correspondencia o caracter deve ser eh um "vazio" (fim da string) ou um break line (\n)
+
 
 metachars
 https://www.ibm.com/support/knowledgecenter/SSGU8G_14.1.0/com.ibm.dbext.doc/ids_dbxt_545.htm

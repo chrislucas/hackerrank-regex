@@ -220,6 +220,19 @@ fun testEndOfString() {
     // 1 caracter
     val manyLineBreaksAndMultiLineModeOff = "[a-zA-Z]\\n+$".toRegex(RegexOption.MULTILINE)
     "a\n\n\n\n".logMatchRegex(manyLineBreaksAndMultiLineModeOff)
+    val list = listOf("\n4", "\n4\n", "4", "4\n")
+    list.forEachIndexed{i, s ->
+        s.logMatchesRegex(Regex("^\\d$")
+            , Regex("^\\d\\Z")
+            , Regex("\\A\\d\\Z")
+            , after = { println("*************************************")}
+            , assertion =  i < list.size - 1
+        )
+    }
+
+    // negated char class nao corresponde com vazio
+    "".logMatchRegex(Regex("[^\\w]"))
+    "".logMatchRegex(Regex("$"))
 }
 
 fun main() {
