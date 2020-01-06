@@ -143,29 +143,29 @@ fun testBoundaryOfString() {
  * mas"
  *
  * */
-val phrases = listOf(
-    "This is a cat, and she's awesome"
-    , "This is a c a t, pand she's pawesome"
-    , "This is a cat, a awesome cat"
-    , "This is a cat\nA awesome cat"
-    , "This is a cat\nA awesome cat\nI love cat\nThe dog ates cat\nShe has a lot of cats"
-    , "cat is awesome"
-    , "This is a cat, a awesome cat"
-    , "is,is,is,is,is,is,is,is,is,is,is"
-    , "*is,is,|is,#is,sis, is , sis , asis ,asis,*is, is,*is,\$is,%is,-is,+is,is"
-    , "is*, is*, is|, is#, is , sis, asis ,asis,is*,is ,is$,is%,is-,is+, is,   is ,  is  "
-    , " 'isnot' | 'is not' | is not | isnot"
-    , " 'isnot' a 'is not' a is not a isnot ais not aisnot"
-    , " 1) 'isnot', 2) ' is not', 3) ' is not ', 4) 'is not', 5) 'aisnot', 6) 'a is not', 7) 'a isnot'" +
-            ", 8) 'ais not', 9) 'aisnot'"
-    , "'isnot' | 'is not' |is not|isnot"
-    , "is\nis\nis\nis\nis\nis"
-    , "is not\nis not\nis not\nis not\nis not\nis not"
-)
-fun testReplaceWithABoundaryWord() {
 
+fun testReplaceWithABoundaryWord() {
+    val phrases = listOf(
+        "This is a cat, and she's awesome"
+        , "This is a c a t, pand she's pawesome"
+        , "This is a cat, a awesome cat"
+        , "This is a cat\nA awesome cat"
+        , "This is a cat\nA awesome cat\nI love cat\nThe dog ates cat\nShe has a lot of cats"
+        , "cat is awesome"
+        , "is,is,is,is,is,is,is,is,is,is,is"
+        , "*is,is,|is,#is,sis, is , sis , asis ,asis,*is, is,*is,\$is,%is,-is,+is,is"
+        , "is*, is*, is|, is#, is , sis, asis ,asis,is*,is ,is$,is%,is-,is+, is,   is ,  is  "
+        , " 'isnot' | 'is not' | is not | isnot"
+        , " 'isnot' a 'is not' a is not a isnot ais not aisnot"
+        , " 1) 'isnot', 2) ' is not', 3) ' is not ', 4) 'is not', 5) 'aisnot', 6) 'a is not', 7) 'a isnot'" +
+                ", 8) 'ais not', 9) 'aisnot'"
+        , "'isnot' | 'is not' |is not|isnot"
+        , "is\nis\nis\nis\nis\nis"
+        , "is not\nis not\nis not\nis not\nis not\nis not"
+    )
     val listOfRegex = listOf(
         Regex("\\ba") to "*"
+        , Regex("a\\b") to "*"
         // as duas regex abaixo vao nos dar uma nocao da diferenca sobre word boundary antes e depois de um caracter/string de buscca
         , Regex("\\bis") to "isn't"
         , Regex("is\\b") to "isn't"
@@ -199,13 +199,38 @@ fun testReplaceWithABoundaryWord() {
         println("*************************************************************")
     }
 }
-
+/**
+ * '\B matches at any position between two word characters
+ * as well as at any position between two non-word characters.'
+ * \B corresponde em toda posicao que \b nao corresponde. Corresponde na posicao
+ * entre 2 caracteres de palavra bem como na posicao entre 2 caracteres que nao
+ * sao de palavra
+ * \b (\w posicao \W) ou contrario
+ * \B (\w posicao \w) ou (\W posicao \W)
+ * */
 fun testReplaceWithANonBoundaryWord() {
+    val phrases = listOf(
+        "This is a cat, and she's awesome"
+        , "This is a c a t, pand she's pawesome"
+        , "This is a cat, a awesome cat"
+        , "This is a cat\nA awesome cat"
+        , "This is a cat\nA awesome cat\nI love cat\nThe dog ates cat\nShe has a lot of cats"
+        , "cat is awesome"
+        , "This isnot a cat and is not a dog"
+        , "This is not a cat and isnot a dog"
+        , "cat isnot awesome"
+        , "cat is not awesome"
+    )
     val pairRegexReplace = listOf(
         Regex("\\Ba") to "*"
         , Regex("a\\B") to "*"
+        , Regex("\\Ba\\B") to "*"
         , Regex("\\Bis") to "**"
         , Regex("is\\B") to "**"
+        , Regex("\\Bis\\B") to "(**)"
+        , Regex("\\B(is not|isnot)") to "isn't"
+        , Regex("(is not|isnot)\\B") to "isn't"
+        , Regex("\\B(is not|isnot)\\B") to "isn't"
     )
 
     phrases.forEachIndexed { i, phrase ->
