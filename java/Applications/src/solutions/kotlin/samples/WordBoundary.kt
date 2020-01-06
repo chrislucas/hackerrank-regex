@@ -220,6 +220,10 @@ fun testReplaceWithANonBoundaryWord() {
         , "This is not a cat and isnot a dog"
         , "cat isnot awesome"
         , "cat is not awesome"
+        , "is nota isnota"
+        , "is notaisnota"
+        , "is nota"
+        , "isnota"
     )
     val pairRegexReplace = listOf(
         Regex("\\Ba") to "*"
